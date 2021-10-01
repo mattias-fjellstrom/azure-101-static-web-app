@@ -28,4 +28,5 @@ resource staticWebApp 'Microsoft.Web/staticSites@2021-01-15' = {
   }
 }
 
+output staticWebAppName string = staticWebApp.name
 output hostname string = staticWebApp.properties.defaultHostname

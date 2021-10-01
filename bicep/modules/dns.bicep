@@ -8,6 +8,7 @@ resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' existing = {
   resource cname 'CNAME' = {
     name: customDomainName
     properties: {
+      TTL: 3600
       CNAMERecord: {
         cname: targetHostname
       }

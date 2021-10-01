@@ -24,7 +24,7 @@ param customDomainName string
 var github = json(loadTextContent('../.github_configuration'))
 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: 'rg-static-web-app-${uniqueString(deploymentTimestamp)}'
+  name: 'rg-static-web-app-${uniqueString(subscription().id, deployment().name)}'
   location: location
 }
 
@@ -61,7 +61,11 @@ module customDomain 'modules/customDomain.bicep' = {
   scope: rg
   name: '${deploymentTimestamp}-custom-domain-module'
   params: {
+    staticWebAppName: staticWebApp.outputs.staticWebAppName
     customDomainName: customDomainName
     dnsZoneName: dnsZoneName
   }
+  dependsOn: [
+    dns
+  ]
 }
