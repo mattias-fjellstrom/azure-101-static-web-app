@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from "react"
+import React, { FormEvent, useState } from "react"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import Card from "react-bootstrap/Card"
@@ -10,7 +10,7 @@ const AddTodoItem: React.FC = () => {
 
   const submitForm = async (event: FormEvent) => {
     event.preventDefault()
-    const response = await fetch("/api/todos", {
+    await fetch("/api/todos", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
