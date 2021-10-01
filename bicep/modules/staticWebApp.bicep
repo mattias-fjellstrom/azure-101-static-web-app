@@ -1,6 +1,3 @@
-param customDomainName string
-param dnsZoneName string
-
 resource staticWebApp 'Microsoft.Web/staticSites@2021-01-15' = {
   name: 'swa-${uniqueString(resourceGroup().id)}'
   location: resourceGroup().location
@@ -12,8 +9,6 @@ resource staticWebApp 'Microsoft.Web/staticSites@2021-01-15' = {
     type: 'SystemAssigned'
   }
   properties: {}
-
-  resource prodCustomDomain 'customDomains' = {
-    name: '${customDomainName}.${dnsZoneName}'
-  }
 }
+
+output hostname string = staticWebApp.properties.defaultHostname

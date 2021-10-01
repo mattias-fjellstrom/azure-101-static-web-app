@@ -29,13 +29,6 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 module staticWebApp 'modules/staticWebApp.bicep' = {
   scope: rg
   name: '${deploymentTimestamp}-static-web-app-module'
-  dependsOn: [
-    dns
-  ]
-  params: {
-    customDomainName: customDomainName
-    dnsZoneName: dnsZoneName
-  }
 }
 
 module cosmos 'modules/cosmos.bicep' = {
@@ -50,6 +43,16 @@ resource dnsResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' existi
 module dns 'modules/dns.bicep' = {
   scope: dnsResourceGroup
   name: '${deploymentTimestamp}-dns-module'
+  params: {
+    customDomainName: customDomainName
+    dnsZoneName: dnsZoneName
+    targetHostname: staticWebApp.outputs.hostname
+  }
+}
+
+module customDomain 'modules/customDomain.bicep' = {
+  scope: rg
+  name: '${deploymentTimestamp}-custom-domain-module'
   params: {
     customDomainName: customDomainName
     dnsZoneName: dnsZoneName
