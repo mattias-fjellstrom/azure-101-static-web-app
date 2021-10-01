@@ -1,10 +1,21 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 
-function App() {
+const App: React.FC = () => {
+  const [data, setData] = useState("No data")
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { text } = await (await fetch("/api/todos")).json()
+      setData(text)
+    }
+
+    fetchData()
+  }, [])
+
   return (
     <div className="App">
       <header className="App-header">
-        <p>App under construction</p>
+        <p>{data}</p>
       </header>
     </div>
   )
