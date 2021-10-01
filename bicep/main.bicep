@@ -21,6 +21,8 @@ param dnsZoneName string
 @description('Custom domain prefix (XXX.<dns zone>)')
 param customDomainName string
 
+var github = json(loadTextContent('../.github_configuration'))
+
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: 'rg-static-web-app-${uniqueString(deploymentTimestamp)}'
   location: location
@@ -29,6 +31,11 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 module staticWebApp 'modules/staticWebApp.bicep' = {
   scope: rg
   name: '${deploymentTimestamp}-static-web-app-module'
+  params: {
+    gitHubRepositoryName: github.repositoryName
+    gitHubUsername: github.username
+    gitHubRepositoryToken: github.repositoryToken
+  }
 }
 
 module cosmos 'modules/cosmos.bicep' = {
