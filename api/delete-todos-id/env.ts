@@ -1,0 +1,3 @@
+export const CONNECTION_STRING = process.env.COSMOS_DB_CONNECTION_STRING
+export const DATABASE = process.env.COSMOS_DB_DATABASE_NAME
+export const CONTAINER = process.env.COSMOS_DB_CONTAINER_NAME

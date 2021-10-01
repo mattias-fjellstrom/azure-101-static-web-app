@@ -4,19 +4,19 @@ import Button from "react-bootstrap/Button"
 import Card from "react-bootstrap/Card"
 import { Priority } from "./models/todoItem"
 
-const AddTodoItem: React.FC = () => {
+interface AddTodoItemProps {
+  addNewTodoItem: (title: string, priority: Priority) => void
+}
+
+const AddTodoItem: React.FC<AddTodoItemProps> = ({ addNewTodoItem }) => {
   const [title, setTitle] = useState("")
   const [priority, setPriority] = useState<Priority>(Priority.Low)
 
   const submitForm = async (event: FormEvent) => {
     event.preventDefault()
-    await fetch("/api/todos", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ title, priority }),
-    })
+    addNewTodoItem(title, priority)
+    setTitle("")
+    setPriority(Priority.Low)
   }
 
   return (
@@ -25,11 +25,11 @@ const AddTodoItem: React.FC = () => {
       <Card.Body>
         <Form onSubmit={(event) => submitForm(event)}>
           <Form.Group className="mb-3">
-            <Form.Label>Give your todo item a title</Form.Label>
             <Form.Control
               required
+              size="lg"
               type="text"
-              placeholder="What should you do?"
+              placeholder="What is it that you need to do?"
               value={title}
               onChange={(event) => {
                 setTitle(event.target.value)
@@ -38,8 +38,8 @@ const AddTodoItem: React.FC = () => {
           </Form.Group>
 
           <Form.Group>
-            <Form.Label>Give your todo item a priority</Form.Label>
-            <div className="mb-5">
+            <Form.Label>Assign a priority</Form.Label>
+            <div className="mb-3">
               <Form.Check
                 inline
                 label="Low"
@@ -73,7 +73,7 @@ const AddTodoItem: React.FC = () => {
             </div>
           </Form.Group>
 
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" size="lg">
             Add todo item
           </Button>
         </Form>
