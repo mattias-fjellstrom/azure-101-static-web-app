@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react"
+import { TodoItem } from "./models/todoItem"
 
 const App: React.FC = () => {
-  const [data, setData] = useState("No data")
+  const [todoItems, setTodoItems] = useState<TodoItem[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
-      const { text } = await (await fetch("/api/todos")).json()
-      setData(text)
+      const { items } = await (await fetch("/api/todos")).json()
+      setTodoItems(items)
     }
 
     fetchData()
@@ -15,7 +16,13 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <p>{data}</p>
+        {todoItems.map((item, index) => {
+          return (
+            <p key={index}>
+              {item.id} {item.title} {item.done} (priority {item.priority})
+            </p>
+          )
+        })}
       </header>
     </div>
   )
