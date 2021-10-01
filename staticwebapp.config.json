@@ -1,0 +1,9 @@
+{
+  "routes": [
+    {
+      "route": "/api/*",
+      "methods": ["POST", "PUT", "DELETE"],
+      "allowedRoles": ["contributor"]
+    }
+  ]
+}
