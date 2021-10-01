@@ -4,6 +4,7 @@ import TodoItem from "./TodoItem"
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
+import Toast from "react-bootstrap/Toast"
 import "bootstrap/dist/css/bootstrap.min.css"
 import AddTodoItem from "./AddTodoItem"
 
@@ -67,6 +68,7 @@ const App: React.FC = () => {
   const [high, setHigh] = useState(0)
   const [medium, setMedium] = useState(0)
   const [low, setLow] = useState(0)
+  const [showError, setShowError] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,74 +105,88 @@ const App: React.FC = () => {
   }
 
   const deleteTodoItem = async (id: string) => {
-    await fetch(`/api/todos/${id}`, {
+    const response = await fetch(`/api/todos/${id}`, {
       method: "DELETE",
     })
 
-    dispatch({ type: "DELETE", data: { id } })
+    if (response.status === 200) {
+      dispatch({ type: "DELETE", data: { id } })
+    } else {
+      setShowError(true)
+    }
   }
 
   return (
-    <Container fluid="md">
-      <Row>
-        <Col>
-          <h1 className="mb-3 mt-3">Todo App</h1>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <AddTodoItem addNewTodoItem={addNewTodoItem} />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <h2>High priority ({high})</h2>
-        </Col>
-      </Row>
-      {state.todoItems
-        .filter((item) => item.priority === Priority.High)
-        .map((item) => {
-          return (
-            <Row>
-              <Col>
-                <TodoItem item={item} deleteTodoItem={deleteTodoItem} />
-              </Col>
-            </Row>
-          )
-        })}
-      <Row>
-        <Col>
-          <h2>Medium priority ({medium})</h2>
-        </Col>
-      </Row>
-      {state.todoItems
-        .filter((item) => item.priority === Priority.Medium)
-        .map((item) => {
-          return (
-            <Row>
-              <Col>
-                <TodoItem item={item} deleteTodoItem={deleteTodoItem} />
-              </Col>
-            </Row>
-          )
-        })}
-      <Row>
-        <Col>
-          <h2>Low priority ({low})</h2>
-        </Col>
-      </Row>
-      {state.todoItems
-        .filter((item) => item.priority === Priority.Low)
-        .map((item) => {
-          return (
-            <Row>
-              <Col>
-                <TodoItem item={item} deleteTodoItem={deleteTodoItem} />
-              </Col>
-            </Row>
-          )
-        })}
-    </Container>
+    <>
+      {showError && (
+        <Toast className="d-inline-block m-1" bg="danger">
+          <Toast.Header>
+            <strong className="me-auto">Error</strong>
+          </Toast.Header>
+          <Toast.Body>You are not allowed to do that operation</Toast.Body>
+        </Toast>
+      )}
+      <Container fluid="md">
+        <Row>
+          <Col>
+            <h1 className="mb-3 mt-3">Todo App</h1>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <AddTodoItem addNewTodoItem={addNewTodoItem} />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <h2>High priority ({high})</h2>
+          </Col>
+        </Row>
+        {state.todoItems
+          .filter((item) => item.priority === Priority.High)
+          .map((item) => {
+            return (
+              <Row>
+                <Col>
+                  <TodoItem item={item} deleteTodoItem={deleteTodoItem} />
+                </Col>
+              </Row>
+            )
+          })}
+        <Row>
+          <Col>
+            <h2>Medium priority ({medium})</h2>
+          </Col>
+        </Row>
+        {state.todoItems
+          .filter((item) => item.priority === Priority.Medium)
+          .map((item) => {
+            return (
+              <Row>
+                <Col>
+                  <TodoItem item={item} deleteTodoItem={deleteTodoItem} />
+                </Col>
+              </Row>
+            )
+          })}
+        <Row>
+          <Col>
+            <h2>Low priority ({low})</h2>
+          </Col>
+        </Row>
+        {state.todoItems
+          .filter((item) => item.priority === Priority.Low)
+          .map((item) => {
+            return (
+              <Row>
+                <Col>
+                  <TodoItem item={item} deleteTodoItem={deleteTodoItem} />
+                </Col>
+              </Row>
+            )
+          })}
+      </Container>
+    </>
   )
 }
 
