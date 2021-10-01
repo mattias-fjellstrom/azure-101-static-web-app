@@ -1,7 +1,6 @@
-import React, { useState } from "react"
+import React from "react"
 import { Priority, TodoItemModel } from "./models/todoItem"
 import Alert from "react-bootstrap/Alert"
-import FormCheck from "react-bootstrap/FormCheck"
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
