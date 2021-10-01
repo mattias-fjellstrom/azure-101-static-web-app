@@ -1,13 +1,14 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions"
-import { sampleData } from "../todoItem"
+import { TodoItem } from "../todoItem"
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
-  req: HttpRequest
+  req: HttpRequest,
+  documents: TodoItem[]
 ): Promise<void> {
   context.res.json({
-    statusCode: 200,
-    items: sampleData,
+    status: 200,
+    items: documents,
   })
 }
 

@@ -1,4 +1,4 @@
-export interface TodoItem {
+export interface TodoItemModel {
   id: string
   title: string
   priority: Priority

@@ -6,7 +6,7 @@
       "direction": "in",
       "name": "req",
       "route": "todos",
-      "methods": ["get"]
+      "methods": ["post"]
     },
     {
       "type": "http",
@@ -15,13 +15,13 @@
     },
     {
       "type": "cosmosDB",
-      "direction": "in",
-      "name": "documents",
+      "direction": "out",
+      "name": "outputDocument",
       "databaseName": "%COSMOS_DB_DATABASE_NAME%",
       "collectionName": "%COSMOS_DB_CONTAINER_NAME%",
-      "connectionStringSetting": "COSMOS_DB_CONNECTION_STRING",
-      "sqlQuery": "SELECT c.id, c.title, c.done, c.priority FROM c"
+      "createIfNotExists": false,
+      "connectionStringSetting": "COSMOS_DB_CONNECTION_STRING"
     }
   ],
-  "scriptFile": "../dist/get-todos/index.js"
+  "scriptFile": "../dist/post-todos/index.js"
 }
