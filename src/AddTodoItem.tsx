@@ -74,7 +74,7 @@ const AddTodoItem: React.FC<AddTodoItemProps> = ({ addNewTodoItem }) => {
           </Form.Group>
 
           <Button variant="primary" type="submit" size="lg">
-            Add todo item
+            Add
           </Button>
         </Form>
       </Card.Body>

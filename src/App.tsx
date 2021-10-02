@@ -4,9 +4,10 @@ import TodoItem from "./TodoItem"
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
-import Toast from "react-bootstrap/Toast"
 import "bootstrap/dist/css/bootstrap.min.css"
 import AddTodoItem from "./AddTodoItem"
+import Login from "./Login"
+import { ClientPrincipal } from "./models/clientPrincipal"
 
 interface State {
   todoItems: TodoItemModel[]
@@ -68,7 +69,22 @@ const App: React.FC = () => {
   const [high, setHigh] = useState(0)
   const [medium, setMedium] = useState(0)
   const [low, setLow] = useState(0)
-  const [showError, setShowError] = useState(false)
+  const [roles, setRoles] = useState<string[]>([])
+  const [user, setUser] = useState("Anonymous user")
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const response = await fetch("/.auth/me")
+      const body = await response.json()
+      const clientPrincipal: ClientPrincipal = body.clientPrincipal
+
+      if (clientPrincipal !== null) {
+        setUser(clientPrincipal.userDetails)
+        setRoles(clientPrincipal.userRoles)
+      }
+    }
+    fetchUser()
+  })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -111,25 +127,16 @@ const App: React.FC = () => {
 
     if (response.status === 200) {
       dispatch({ type: "DELETE", data: { id } })
-    } else {
-      setShowError(true)
     }
   }
 
   return (
     <>
-      {showError && (
-        <Toast className="d-inline-block m-1" bg="danger">
-          <Toast.Header>
-            <strong className="me-auto">Error</strong>
-          </Toast.Header>
-          <Toast.Body>You are not allowed to do that operation</Toast.Body>
-        </Toast>
-      )}
+      <Login user={user} roles={roles} />
       <Container fluid="md">
         <Row>
           <Col>
-            <h1 className="mb-3 mt-3">Todo App</h1>
+            <h1 className="display-2 mb-3 mt-3 text-center">Todo App</h1>
           </Col>
         </Row>
         <Row>
@@ -139,7 +146,7 @@ const App: React.FC = () => {
         </Row>
         <Row>
           <Col>
-            <h2>High priority ({high})</h2>
+            <h2 className="display-4">High priority ({high})</h2>
           </Col>
         </Row>
         {state.todoItems
@@ -155,7 +162,7 @@ const App: React.FC = () => {
           })}
         <Row>
           <Col>
-            <h2>Medium priority ({medium})</h2>
+            <h2 className="display-4">Medium priority ({medium})</h2>
           </Col>
         </Row>
         {state.todoItems
@@ -171,7 +178,7 @@ const App: React.FC = () => {
           })}
         <Row>
           <Col>
-            <h2>Low priority ({low})</h2>
+            <h2 className="display-4">Low priority ({low})</h2>
           </Col>
         </Row>
         {state.todoItems
