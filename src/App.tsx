@@ -84,7 +84,7 @@ const App: React.FC = () => {
       }
     }
     fetchUser()
-  })
+  }, [])
 
   useEffect(() => {
     const fetchData = async () => {
