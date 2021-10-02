@@ -33,10 +33,10 @@ const SignInOptions: React.FC = () => {
   return (
     <div>
       <a href="/.auth/login/aad" className="mr-2">
-        <img src={Microsoft} className="mr-2" />
+        <img src={Microsoft} className="mr-2" alt="Sign-in with Microsoft" />
       </a>
       <a href="/.auth/login/google" className="mr-2">
-        <img src={Google} className="mr-2" />
+        <img src={Google} className="mr-2" alt="Sign-in with Google" />
       </a>
     </div>
   )
