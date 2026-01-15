@@ -136,7 +136,7 @@ const App: React.FC = () => {
       <Container fluid="md">
         <Row>
           <Col>
-            <h1 className="display-2 mb-3 mt-3 text-center">Todo App</h1>
+            <h1 className="display-2 mb-3 mt-3 text-center">Todo App.</h1>
           </Col>
         </Row>
         <Row>
